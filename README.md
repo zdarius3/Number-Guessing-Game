@@ -1,9 +1,9 @@
-## Installation (C# 12 / .NET 8)
+## Installation (C# 12 / .NET 9)
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/zdarius3/GitHub-User-Activity
-   cd GitHub-User-Activity
+   git clone https://github.com/zdarius3/Number-Guessing-Game
+   cd Number-Guessing-Game
    ```
 
 2. **Build the project:**
