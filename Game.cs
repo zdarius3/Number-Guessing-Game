@@ -90,10 +90,14 @@ public class Game
 
             if (GameStats.MaxAttempts != GameStats.CurrentAttempt)
             {
-                if (GameStats.GuessedNumber > GameStats.NumberToGuess)
+                if (GameStats.GuessedNumber - 25 > GameStats.NumberToGuess)
                     Console.WriteLine("Too high!");
-                else if (GameStats.GuessedNumber < GameStats.NumberToGuess)
+                else if (GameStats.GuessedNumber + 25 < GameStats.NumberToGuess)
                     Console.WriteLine("Too low!");
+                else if (GameStats.GuessedNumber > GameStats.NumberToGuess)
+                    Console.WriteLine("A bit high!");
+                else if (GameStats.GuessedNumber < GameStats.NumberToGuess)
+                    Console.WriteLine("A bit low!");
             }
         }
     }
