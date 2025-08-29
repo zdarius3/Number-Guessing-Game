@@ -21,7 +21,7 @@ public class Game
             GameStats.Reset();
         } while (AskToRepeat());
 
-        Console.WriteLine("\nThanks for playing!");
+        Console.WriteLine("Thanks for playing!");
     }
 
     private void Welcome()
@@ -42,7 +42,7 @@ public class Game
             if (number < min || number > max)
             {
                 Console.WriteLine("Error. Please input only a number " +
-                        $"between {min} and {max}.");
+                        $"between {min} and {max}.\n");
             }
             else
             {
@@ -122,10 +122,11 @@ public class Game
         string loopInput = "";
         Console.Write("Type 0 to exit or anything else to play again: ");
         loopInput = Console.ReadLine() ?? "";
+        Console.WriteLine();
 
         if (loopInput.Equals("0"))
-            return true;
+            return false;
 
-        return false;
+        return true;
     }
 }

@@ -7,7 +7,6 @@ public static class InputHelper
         if (input.Any(char.IsLetter) ||
             input.Any(char.IsSymbol) ||
             input.Any(char.IsPunctuation) ||
-            input.Any(char.IsWhiteSpace) ||
             input.Length == 0 ||
             input.Length > 10 ||
             input == null)
