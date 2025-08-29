@@ -54,6 +54,7 @@ public class Game
     {
         Welcome();
         string loopInput = "";
+        
         do
         {
             GuessedNumber = 0;
@@ -83,9 +84,9 @@ public class Game
                 {
                     if (GuessedNumber > NumberToGuess)
                         Console.WriteLine("Too high!");
-                    else if (GuessedNumber < NumberToGuess)
+                    else
                         Console.WriteLine("Too low!");
-                } 
+                }
             }
 
             Timer.Stop();
