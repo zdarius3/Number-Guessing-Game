@@ -7,6 +7,23 @@ public class Game
 
     public Game() { }
 
+    public void ExecuteGame()
+    {
+        Welcome();
+        GameStats = new GameStats();
+        do
+        {
+            SelectDifficulty();
+            GameStats.StartTimer();
+            LoopGuessing();
+            GameStats.StopTimer();
+            GetResult();
+            GameStats.Reset();
+        } while (AskToRepeat());
+
+        Console.WriteLine("\nThanks for playing!");
+    }
+
     private void Welcome()
     {
         Console.WriteLine("Welcome to the Number Guessing Game!");
@@ -35,6 +52,18 @@ public class Game
         return number;
     }
 
+    private void SelectDifficulty()
+    {
+        GameStats.MaxAttempts = GetMaxAttempts(
+                            AskInput("""
+                        Please select the difficulty:
+                        1 - Easy (10 attempts)
+                        2 - Medium (5 attempts)
+                        3 - Hard (3 attempts)
+                        Option: 
+                        """, 1, 3));
+    }
+
     private int GetMaxAttempts(int option)
     {
         return option switch
@@ -46,70 +75,57 @@ public class Game
         };
     }
 
-    public void ExecuteGame()
+    private void LoopGuessing()
     {
-        Welcome();
-        GameStats = new GameStats();
-        string loopInput = "";
-        
-        do
-        {
-            GameStats.GuessedNumber = 0;
-            GameStats.MaxAttempts = GetMaxAttempts(
-                            AskInput("""
-                        Please select the difficulty:
-                        1 - Easy (10 attempts)
-                        2 - Medium (5 attempts)
-                        3 - Hard (3 attempts)
-                        Option: 
-                        """, 1, 3));
-
-            GameStats.StartTimer();
-
-            while (GameStats.CurrentAttempt < GameStats.MaxAttempts &&
+        while (GameStats.CurrentAttempt < GameStats.MaxAttempts &&
                 GameStats.GuessedNumber != GameStats.NumberToGuess)
-            {
-                GameStats.CurrentAttempt++;
-                if (GameStats.MaxAttempts == GameStats.CurrentAttempt)
-                    Console.WriteLine("\n--- Last attempt! ---");
-                else
-                    Console.WriteLine($"\n--- Attempt {GameStats.CurrentAttempt} ---");
-
-                GameStats.GuessedNumber = AskInput("Enter your guess: ", 1, 100);
-
-                if (GameStats.MaxAttempts != GameStats.CurrentAttempt)
-                {
-                    if (GameStats.GuessedNumber > GameStats.NumberToGuess)
-                        Console.WriteLine("Too high!");
-                    else if (GameStats.GuessedNumber < GameStats.NumberToGuess)
-                        Console.WriteLine("Too low!");
-                }
-            }
-
-            GameStats.StopTimer();
-
-            Console.WriteLine();
-
-            if (GameStats.GuessedNumber == GameStats.NumberToGuess)
-            {
-                string showAttempts = "attempt";
-                if (GameStats.CurrentAttempt > 1) showAttempts = "attempts";
-                Console.WriteLine($"Congrats! You beat the game in " +
-                        $"{GameStats.GetTimeInSeconds()} seconds " +
-                        $"and {GameStats.CurrentAttempt} {showAttempts}!");
-            }
+        {
+            GameStats.CurrentAttempt++;
+            if (GameStats.MaxAttempts == GameStats.CurrentAttempt)
+                Console.WriteLine("\n--- Last attempt! ---");
             else
+                Console.WriteLine($"\n--- Attempt {GameStats.CurrentAttempt} ---");
+
+            GameStats.GuessedNumber = AskInput("Enter your guess: ", 1, 100);
+
+            if (GameStats.MaxAttempts != GameStats.CurrentAttempt)
             {
-                Console.WriteLine($"You lost. The number was {GameStats.NumberToGuess}. " +
-                            "Good luck next time.\n");
+                if (GameStats.GuessedNumber > GameStats.NumberToGuess)
+                    Console.WriteLine("Too high!");
+                else if (GameStats.GuessedNumber < GameStats.NumberToGuess)
+                    Console.WriteLine("Too low!");
             }
+        }
+    }
 
-            GameStats.Reset();
+    private void GetResult()
+    {
 
-            Console.Write("Type 0 to exit or anything else to play again: ");
-            loopInput = Console.ReadLine() ?? "";
-        } while (!loopInput.Trim().Equals("0"));
+        Console.WriteLine();
+        if (GameStats.GuessedNumber == GameStats.NumberToGuess)
+        {
+            string showAttempts = "attempt";
+            if (GameStats.CurrentAttempt > 1) showAttempts = "attempts";
+            Console.WriteLine($"Congrats! You beat the game in " +
+                    $"{GameStats.GetTimeInSeconds()} seconds " +
+                    $"and {GameStats.CurrentAttempt} {showAttempts}!");
+        }
+        else
+        {
+            Console.WriteLine($"You lost. The number was {GameStats.NumberToGuess}. " +
+                        "Good luck next time.\n");
+        }
+    }
 
-        Console.WriteLine("\nThanks for playing!");
+    private bool AskToRepeat()
+    {
+        string loopInput = "";
+        Console.Write("Type 0 to exit or anything else to play again: ");
+        loopInput = Console.ReadLine() ?? "";
+
+        if (loopInput.Equals("0"))
+            return true;
+
+        return false;
     }
 }
