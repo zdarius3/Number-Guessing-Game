@@ -80,13 +80,22 @@ public class Game
         while (GameStats.CurrentAttempt < GameStats.MaxAttempts &&
                 GameStats.GuessedNumber != GameStats.NumberToGuess)
         {
-            GameStats.CurrentAttempt++;
-            if (GameStats.MaxAttempts == GameStats.CurrentAttempt)
+            if (GameStats.MaxAttempts == GameStats.CurrentAttempt + 1)
                 Console.WriteLine("\n--- Last attempt! ---");
             else
-                Console.WriteLine($"\n--- Attempt {GameStats.CurrentAttempt} ---");
+                Console.WriteLine($"\n--- Attempt {GameStats.CurrentAttempt + 1} ---");
 
             GameStats.GuessedNumber = AskInput("Enter your guess: ", 1, 100);
+
+            if (GameStats.AlreadyGuessedNumber())
+            {
+                Console.WriteLine($"You've already tried with {GameStats.GuessedNumber}. " +
+                            "Please try another number.");
+                continue;
+            }
+
+            GameStats.SavePlayerGuess(GameStats.GuessedNumber);
+            GameStats.CurrentAttempt++;
 
             if (GameStats.MaxAttempts != GameStats.CurrentAttempt)
             {
